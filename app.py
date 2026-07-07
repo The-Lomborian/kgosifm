@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, send_from_directory
 import json
 from datetime import datetime
 import requests
@@ -94,6 +94,10 @@ def delete(idx):
         news.pop(idx)
         save_news(news)
     return redirect('/admin')
+
+@app.route('/static/<path:filename>')
+def static_files(filename):
+    return send_from_directory('static', filename)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=10000)
