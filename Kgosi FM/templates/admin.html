@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Admin - Kgosi FM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="max-w-4xl mx-auto px-4 py-12">
+        <h1 class="text-3xl font-bold mb-8">Admin Panel</h1>
+        
+        <div class="bg-white rounded-xl p-6 shadow-md mb-8">
+            <h2 class="text-xl font-bold mb-4">Add News</h2>
+            <form method="POST" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold mb-1">Date</label>
+                    <input type="text" name="date" required class="w-full px-4 py-2 border rounded-lg" placeholder="e.g. 01 JUL" />
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-1">Title</label>
+                    <input type="text" name="title" required class="w-full px-4 py-2 border rounded-lg" placeholder="Enter headline" />
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-1">Summary</label>
+                    <textarea name="summary" required rows="3" class="w-full px-4 py-2 border rounded-lg" placeholder="Brief description"></textarea>
+                </div>
+                <button type="submit" class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700">Add News</button>
+            </form>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 shadow-md">
+            <h2 class="text-xl font-bold mb-4">Existing News</h2>
+            {% for item in news %}
+            <div class="border-b py-3 flex justify-between">
+                <div>
+                    <span class="text-red-600 font-bold">{{ item.date }}</span>
+                    <h3 class="font-bold">{{ item.title }}</h3>
+                    <p class="text-sm text-gray-600">{{ item.summary }}</p>
+                </div>
+                <a href="/delete/{{ loop.index0 }}" class="text-red-500 hover:text-red-700" onclick="return confirm('Delete?')">Delete</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
