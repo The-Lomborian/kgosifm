@@ -4,7 +4,7 @@ from datetime import datetime
 import requests
 import pytz
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 NEWS_FILE = 'news.json'
 
 def load_news():
