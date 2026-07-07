@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Kgosi FM</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        .font-inter { font-family: 'Inter', sans-serif; }
+        .hero-overlay { background: rgba(0, 0, 0, 0.55); }
+        .text-red-custom { color: #E31A22; }
+        .bg-red-custom { background-color: #E31A22; }
+        .border-red-custom { border-color: #E31A22; }
+        .text-soft-white { color: rgba(255, 255, 255, 0.75); }
+        .footer-link { color: #aaaaaa; transition: color 0.3s ease; }
+        .footer-link:hover { color: #ffffff; }
+        .listen-live-btn { scroll-behavior: smooth; }
+        .player-container {
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid #333;
+        }
+        .player-container .station-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .player-container .station-info img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #444;
+        }
+        .player-container .station-info .station-name {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 16px;
+            color: white;
+        }
+        .player-container .station-info .now-playing {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            color: #888;
+        }
+        .player-container .station-info .now-playing span {
+            color: #E31A22;
+            font-weight: 600;
+        }
+        .custom-player {
+            background: #222;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .player-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+        #playBtn {
+            background: #E31A22;
+            color: white;
+            border: none;
+            padding: 12px 35px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        #playBtn:hover { background: #b8151a; }
+        #volumeControl {
+            width: 120px;
+            cursor: pointer;
+            accent-color: #E31A22;
+        }
+        .volume-label { color: #888; font-size: 14px; font-family: 'Inter', sans-serif; }
+        .current-show-time { font-size: 1.2rem; color: #E31A22; font-weight: 700; }
+        .current-show-name { font-size: 2.8rem; font-weight: 900; color: white; line-height: 1.2; }
+        @media (max-width: 640px) {
+            .current-show-name { font-size: 1.8rem; }
+            .current-show-time { font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+    <section class="relative w-full min-h-screen bg-cover bg-center flex items-center" style="background-image: url('/static/hero.jpg');">
+        <div class="absolute inset-0 hero-overlay"></div>
+        <div class="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-20 py-12">
+            <div class="flex flex-col lg:flex-row items-center lg:items-center gap-12 lg:gap-20">
+                <div class="flex-shrink-0 lg:w-2/5 flex justify-center lg:justify-start">
+                    <div class="w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden border-4 border-white/30 shadow-2xl">
+                        <img src="/static/logofm.jpg" alt="Kgosi FM" class="w-full h-full object-cover" />
+                    </div>
+                </div>
+                <div class="flex-1 lg:w-3/5 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 bg-red-custom text-white text-xs font-bold uppercase tracking-wider px-4 py-1.5 rounded-full mb-4">
+                        <span class="w-1.5 h-1.5 bg-white rounded-full inline-block"></span>
+                        NOW ON AIR
+                    </div>
+                    
+                    {% if show %}
+                        <div class="current-show-time">{{ show.time }}</div>
+                        <div class="current-show-name">{{ show.name }}</div>
+                    {% else %}
+                        <div class="current-show-time">Off Air</div>
+                        <div class="current-show-name">Tune In Tomorrow</div>
+                    {% endif %}
+
+                    <p class="font-inter font-light text-base sm:text-lg md:text-xl text-soft-white max-w-xl mx-auto lg:mx-0 leading-relaxed mb-8 mt-4">
+                        Weekdays 09:00 – 12:00. Spirit-filled conversation, gospel and community from the heart of Mabopane, Pretoria.
+                    </p>
+                    <div class="flex flex-wrap items-center gap-4 justify-center lg:justify-start">
+                        <a href="#listen-live-section" class="font-inter font-semibold text-sm sm:text-base px-8 py-3 rounded-full bg-red-custom text-white hover:bg-red-700 transition duration-300 listen-live-btn">
+                            Tune In Live
+                        </a>
+                        <a href="https://radio.garden/listen/kgosi-fm/LoZ0F5J7" target="_blank" class="font-inter font-semibold text-sm sm:text-base px-8 py-3 rounded-full border-2 border-white/50 text-white hover:bg-white/10 hover:border-white transition duration-300">
+                            Radio Garden
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="w-full bg-white py-12 sm:py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+            <div class="flex items-center justify-between border-b-2 border-red-custom pb-3 mb-8">
+                <h2 class="font-montserrat font-black text-2xl sm:text-3xl text-gray-900">
+                    Current Affairs
+                </h2>
+            </div>
+            <div class="space-y-6">
+                {% for item in news %}
+                <div class="flex flex-col sm:flex-row gap-3 sm:gap-6">
+                    <div class="sm:w-24 flex-shrink-0">
+                        <span class="font-montserrat font-bold text-sm text-red-custom uppercase">{{ item.date }}</span>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-montserrat font-bold text-base sm:text-lg text-gray-800 mb-1">
+                            <a href="{{ item.url }}" target="_blank" class="hover:text-red-custom transition">{{ item.title }}</a>
+                        </h3>
+                        <p class="font-inter text-sm text-gray-500 mb-2">{{ item.summary }}</p>
+                        <a href="{{ item.url }}" target="_blank" class="font-inter font-bold text-xs text-red-custom uppercase tracking-wide hover:underline">Read More →</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <section id="listen-live-section" class="w-full bg-[#111111] py-16 sm:py-20">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <div class="inline-flex items-center gap-2 bg-red-custom text-white text-xs font-bold uppercase tracking-wider px-4 py-1.5 rounded-full mb-4">
+                    <span class="w-1.5 h-1.5 bg-white rounded-full inline-block"></span>
+                    LIVE STREAM
+                </div>
+                <h2 class="font-montserrat font-black text-3xl sm:text-4xl md:text-5xl text-white mb-3">
+                    Listen Live
+                </h2>
+                <p class="font-inter text-base text-gray-400 max-w-xl mx-auto">
+                    Stream Kgosi FM directly from your browser, anywhere in the world.
+                </p>
+            </div>
+            <div class="player-container">
+                <div class="station-info">
+                    <img src="/static/logofm.jpg" alt="Kgosi FM" />
+                    <div>
+                        <div class="station-name">Kgosi FM</div>
+                        <div class="now-playing">Now Playing: <span>{% if show %}{{ show.name }}{% else %}Off Air{% endif %}</span></div>
+                    </div>
+                </div>
+                <div class="custom-player">
+                    <audio id="player" autoplay>
+                        <source src="https://sv2.famcast.co.za:8769/stream" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                    <div class="player-controls">
+                        <button id="playBtn">⏸ Pause</button>
+                        <span class="volume-label">🔊</span>
+                        <input type="range" id="volumeControl" min="0" max="1" step="0.1" value="1">
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+                <div class="bg-[#1a1a1a] rounded-xl p-6 border border-gray-800 hover:border-gray-700 transition">
+                    <span class="font-inter font-bold text-xs text-red-custom uppercase tracking-wider block mb-2">PODCASTS</span>
+                    <a href="https://youtube.com/@kgosietsilesegongoaneliveshow?si=P6vCXDwD-1QkYlEW" target="_blank" class="font-montserrat font-bold text-lg text-white hover:text-red-custom transition block mb-1">
+                        Watch on YouTube →
+                    </a>
+                    <p class="font-inter text-sm text-gray-400">Kgosietsile Segongoane Live Show</p>
+                </div>
+                <div class="bg-[#1a1a1a] rounded-xl p-6 border border-gray-800 hover:border-gray-700 transition">
+                    <span class="font-inter font-bold text-xs text-red-custom uppercase tracking-wider block mb-2">ALTERNATIVE</span>
+                    <a href="https://radio.garden/listen/kgosi-fm/LoZ0F5J7" target="_blank" class="font-montserrat font-bold text-lg text-white hover:text-red-custom transition block mb-1">
+                        Listen on Radio Garden →
+                    </a>
+                    <p class="font-inter text-sm text-gray-400">Stream from anywhere on the globe</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="w-full bg-black py-12 sm:py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4">
+                        <img src="/static/logofm.jpg" alt="Kgosi FM" class="w-14 h-14 rounded-full object-cover border-2 border-gray-700 flex-shrink-0" />
+                        <div>
+                            <h3 class="font-montserrat font-bold text-white text-lg uppercase tracking-wide">KGOSI FM</h3>
+                            <span class="font-inter text-xs text-gray-500 uppercase tracking-wider">Your Choice of Radio</span>
+                        </div>
+                    </div>
+                    <p class="font-inter text-sm text-gray-500 leading-relaxed max-w-xs">
+                        Broadcasting spiritual, gospel and youth development programming from Mabopane, Pretoria.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-montserrat font-bold text-white text-sm uppercase tracking-wider mb-4">STATION</h4>
+                    <ul class="font-inter text-sm text-gray-500 space-y-2">
+                        <li>Mabopane, Pretoria</li>
+                        <li>Format: Spiritual · Gospel · Youth</li>
+                        <li>Host: Kgosi (09:00 – 12:00)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-montserrat font-bold text-white text-sm uppercase tracking-wider mb-4">CONNECT</h4>
+                    <ul class="font-inter text-sm space-y-2">
+                        <li><a href="https://youtube.com/@kgosietsilesegongoaneliveshow?si=P6vCXDwD-1QkYlEW" target="_blank" class="footer-link">YouTube Channel</a></li>
+                        <li><a href="https://radio.garden/listen/kgosi-fm/LoZ0F5J7" target="_blank" class="footer-link">Radio Garden</a></li>
+                        <li><a href="#" class="footer-link">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-6 text-center">
+                <p class="font-inter text-xs text-gray-600">&copy; 2026 Kgosi FM. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <script>
+        document.querySelectorAll('.listen-live-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('listen-live-section').scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        const player = document.getElementById('player');
+        const playBtn = document.getElementById('playBtn');
+        const volumeControl = document.getElementById('volumeControl');
+
+        playBtn.addEventListener('click', function() {
+            if (player.paused) {
+                player.play();
+                playBtn.textContent = '⏸ Pause';
+            } else {
+                player.pause();
+                playBtn.textContent = '▶ Play';
+            }
+        });
+
+        volumeControl.addEventListener('input', function() {
+            player.volume = this.value;
+        });
+    </script>
+</body>
+</html>
