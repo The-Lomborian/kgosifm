@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect
 import json
 from datetime import datetime
 import requests
+import pytz
 
 app = Flask(__name__)
 NEWS_FILE = 'news.json'
@@ -18,7 +19,7 @@ def save_news(data):
         json.dump(data, f, indent=2)
 
 def get_show():
-    now = datetime.now()
+    now = datetime.now(pytz.timezone('Africa/Johannesburg'))
     h = now.hour + now.minute/60
     shows = [
         (6, 9, '06:00-09:00', 'Re Moteng Breakfast Show'),
@@ -44,7 +45,7 @@ def fetch_news():
             articles = []
             for item in data['articles'][:5]:
                 articles.append({
-                    'date': datetime.now().strftime('%d %b').upper(),
+                    'date': datetime.now(pytz.timezone('Africa/Johannesburg')).strftime('%d %b').upper(),
                     'title': item['title'],
                     'summary': item['description'] or 'Read more...',
                     'url': item['url']
@@ -58,7 +59,7 @@ def fetch_news():
             articles = []
             for item in data2['articles'][:5]:
                 articles.append({
-                    'date': datetime.now().strftime('%d %b').upper(),
+                    'date': datetime.now(pytz.timezone('Africa/Johannesburg')).strftime('%d %b').upper(),
                     'title': item['title'],
                     'summary': item['description'] or 'Read more...',
                     'url': item['url']
